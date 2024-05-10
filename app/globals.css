@@ -64,3 +64,20 @@ body {
   -ms-transition: cubic-bezier(0.075, 0.82, 0.165, 1);
   -o-transition: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
+.top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  background: #1d1d1d;
+  border-bottom: 1px solid #161616;
+  transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) ease-in;
+  -webkit-transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) ease-in;
+  -moz-transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) ease-in;
+  -ms-transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) ease-in;
+  -o-transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) ease-in;
+  /* background: #161616; */
+  backdrop-filter: blur(3.5px);
+  -webkit-backdrop-filter: blur(3.5px);
+}

@@ -13,14 +13,13 @@ const FeatureProducts = () => {
     const [products] = useState(FeturesProductsList);
     const calculateDiscountPrice = (discountParcent: number, originalPrice: number) => {
         let discountPrice = (originalPrice * discountParcent) / 100;
-        console.log(discountPrice);
         let mainPrice = Math.round(originalPrice - discountPrice)
         return `Tk ${mainPrice}`
     }
 
 
 
-    const path = ""
+
     return (
         <div className='w-full'>
             <header className='flex items-center justify-between p-3'>
@@ -37,10 +36,10 @@ const FeatureProducts = () => {
             <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3 place-items-center px-3'>
                 {
                     products.map(product => {
-                        return <div className="relative m-1 flex w-full max-w-xs flex-col   overflow-hidden rounded-lg  bg-[#252525] clx-wrapper " key={product.id}>
+                        return <div className="relative m-1 flex max-w-xs  flex-col   overflow-hidden rounded-lg  bg-[#252525] clx-wrapper " key={product.id}>
                             <Link
                                 className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
-                                href={`${path}/${product.id}`}
+                                href={`/${product.id}`}
                             >
                                 <Image
                                     src={product.thumbnail}
@@ -106,7 +105,7 @@ const FeatureProducts = () => {
                                         />
                                     </svg>
                                 </Link>
-                                <div className='absolute hidden antialiased  top-5 right-5 bg-[#2b2a2a] z-10 py-4 px-4 rounded-md  items-center justify-center flex-col gap-y-5 clx'>
+                                <div className='absolute hidden top-5 right-5 bg-[#2b2a2a] z-10 py-4 px-4 rounded-md  items-center justify-center flex-col gap-y-5 clx'>
                                     <div className='group'>
                                         <div className='relative'>
                                             <svg

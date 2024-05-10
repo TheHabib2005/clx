@@ -4,7 +4,7 @@ const nextConfig = {
     missingSuspenseWithCSRBailout:false, //
     },
     images:{
-        domains: ['images.unsplash.com',"static-01.daraz.com.bd"]
+        domains: ['images.unsplash.com',"static-01.daraz.com.bd","www.jerseybdclub.com"]
     }
 };
 

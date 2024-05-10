@@ -5,7 +5,7 @@ import React from 'react'
 const Footer = async () => {
 
     return (
-        <footer className="text-sm text-neutral-500 dark:text-neutral-400">
+        <footer className="text-sm text-neutral-500 dark:text-neutral-400  md:pb-0 pb-[100px]">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 border-t border-neutral-200 px-6 py-6 text-sm md:flex-row md:gap-12 md:px-4 min-[1320px]:px-0 dark:border-neutral-700">
                 <div className=''>
                     <Link
@@ -15,7 +15,7 @@ const Footer = async () => {
                         <Image
                             className='sm:w-[130px] w-[100px]'
                             width={130}
-                            height={200}
+                            height={2000000}
                             alt='logo'
                             src={"/logo.png"}
                         />

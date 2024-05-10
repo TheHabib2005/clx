@@ -13,14 +13,48 @@ import MobileSearchBar from "./MobileSearchBar";
 const Header = () => {
 
     const searchPrams = useSearchParams()
+    // console.log(searchPrams);
+
     const { setIsCartBarOpen } = useGlobalTempState()
     const { cart } = useCartStore();
+
+
+    const [isHeaderShow, setIsHeaderShow] = useState("");
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    const handleScroll = (event) => {
+        if (window.scrollY > 100) {
+
+
+            if (window.scrollY < lastScrollY) {
+                setIsHeaderShow("top");
+            } else {
+                setIsHeaderShow("");
+            }
+        } else {
+            setIsHeaderShow("");
+        }
+        setLastScrollY(window.scrollY);
+
+
+    }
+
+
+
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll)
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll)
+        }
+    }, [lastScrollY])
 
 
 
 
     return (
-        <header className=" sm:py-6 py-4 px-4 ">
+        <header className={`sm:py-6 py-4 px-4 ${isHeaderShow}`}>
             {/* mobile view left menu icon */}
             <div className="w-full flex items-center md:justify-normal justify-between">
                 <div
