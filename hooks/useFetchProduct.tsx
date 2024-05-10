@@ -47,11 +47,7 @@ const useFetchProduct = (category?: any) => {
             setIsFetchingProduct(true);
             let response = await fetch("/api/products", {
                 method: "POST",
-                headers: {
-                    authorization: process.env.AUTHORAZCTION_TOKEN!,
-                },
                 body: JSON.stringify(filterQuery),
-
                 cache: "no-cache",
             });
             let res_result = await response.json();

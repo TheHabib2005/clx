@@ -4,8 +4,7 @@ import { it } from "node:test";
 import React, { useEffect, useState } from "react";
 
 const SearchBar = () => {
-    // const { addRecentSearch, recentSearch, removeSerchHistry } = useOtherStore()
-    // console.log(recentSearch);
+
 
     const searchParams = useSearchParams();
     const params = new URLSearchParams(searchParams);
