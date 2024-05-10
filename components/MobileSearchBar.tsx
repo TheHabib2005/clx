@@ -3,10 +3,9 @@ import React from 'react'
 const MobileSearchBar = () => {
     return (
         <form
-            className="w-full relative md:hidden block mt-5"
+            className=" relative md:hidden flex mt-5 "
             onSubmit={(e) => {
                 e.preventDefault();
-
             }}
         >
             <input

@@ -13,7 +13,7 @@ import MobileSearchBar from "./MobileSearchBar";
 const Header = () => {
 
     const searchPrams = useSearchParams()
-    // console.log(searchPrams);
+    console.log(searchPrams);
 
     const { setIsCartBarOpen } = useGlobalTempState()
     const { cart } = useCartStore();
@@ -23,20 +23,14 @@ const Header = () => {
     const [lastScrollY, setLastScrollY] = useState(0);
 
     const handleScroll = (event: Event) => {
-        if (window.scrollY > 100) {
-
-
+        if (window.scrollY > 200) {
             if (window.scrollY < lastScrollY) {
                 setIsHeaderShow("top");
-            } else {
-                setIsHeaderShow("");
             }
         } else {
             setIsHeaderShow("");
         }
         setLastScrollY(window.scrollY);
-
-
     }
 
 
@@ -48,7 +42,7 @@ const Header = () => {
         return () => {
             window.removeEventListener("scroll", handleScroll)
         }
-    }, [lastScrollY])
+    }, [window.scrollY])
 
 
 
@@ -173,7 +167,7 @@ const Header = () => {
                 </div>
                 {/* mobile view right side cart icon  */}
                 <div
-                    className="relative p-3 rounded-md border border-neutral-700 md:hidden block cursor-pointer mt-5"
+                    className="relative p-3 rounded-md border border-neutral-700 md:hidden block cursor-pointer "
                     onClick={() => {
                         setIsCartBarOpen(true)
                     }}

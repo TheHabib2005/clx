@@ -10,6 +10,7 @@ import React, { useState } from 'react'
 const FeatureProducts = () => {
 
     const router = useRouter()
+    // fetch api from db popular products 
     const [products] = useState(FeturesProductsList);
     const calculateDiscountPrice = (discountParcent: number, originalPrice: number) => {
         let discountPrice = (originalPrice * discountParcent) / 100;
@@ -18,13 +19,16 @@ const FeatureProducts = () => {
     }
 
 
+    const [isQuickViewPopupOpen, setIsQuickViewPopupOpen] = useState(false)
+
+
 
 
     return (
         <div className='w-full'>
             <header className='flex items-center justify-between p-3'>
                 <h1 className='md:text-2xl text-xl'>Feature Products​</h1>
-                <div className='flex items-center justify-between p-3 rounded-md  text-[#5A75FF] cursor-pointer bg-[#1d1d1d]'
+                <div className='flex items-center justify-between sm:p-3 p-2 rounded-md  text-[#5A75FF] cursor-pointer bg-[#1d1d1d]'
                     onClick={() => {
                         router.push("/products/search")
                     }}
