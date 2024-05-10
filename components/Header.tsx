@@ -50,7 +50,7 @@ const Header = () => {
                     >
                         <Image
                             width={120}
-                            height={200}
+                            height={2000000000}
                             alt='logo'
                             src={"/logo.png"}
                         />
