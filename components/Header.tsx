@@ -173,7 +173,7 @@ const Header = () => {
                 </div>
                 {/* mobile view right side cart icon  */}
                 <div
-                    className="relative p-3 rounded-md border border-neutral-700 md:hidden block cursor-pointer"
+                    className="relative p-3 rounded-md border border-neutral-700 md:hidden block cursor-pointer mt-5"
                     onClick={() => {
                         setIsCartBarOpen(true)
                     }}
