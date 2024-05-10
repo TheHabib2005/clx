@@ -22,7 +22,7 @@ const Header = () => {
     const [isHeaderShow, setIsHeaderShow] = useState("");
     const [lastScrollY, setLastScrollY] = useState(0);
 
-    const handleScroll = (event) => {
+    const handleScroll = (event: Event) => {
         if (window.scrollY > 100) {
 
 
