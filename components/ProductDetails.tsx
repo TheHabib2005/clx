@@ -1,5 +1,4 @@
 
-import { ProductsApi } from "@/ProductApi";
 import BreadGrum from "@/components/BreadGrum";
 import Image from "next/image";
 import Link from "next/link";
