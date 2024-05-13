@@ -48,21 +48,17 @@ const SearchBar = () => {
     };
 
     const handleInputKeyDown = (event: any) => {
-
         if (event.key === "ArrowDown") {
-
             setItemActiveIndex(prev => prev < data.length - 1 ? prev + 1 : prev)
             if (containerRef.current && itemActiveIndex > -1) {
                 containerRef.current.scrollTop += 50
             }
-
         } else if (event.key === "ArrowUp") {
             setItemActiveIndex(prev => prev > 0 ? prev - 1 : prev)
             if (containerRef.current && itemActiveIndex > -1) {
                 containerRef.current.scrollTop -= 50
             }
         }
-
         if (event.key === "Enter") {
             if (itemActiveIndex > -1) {
                 let currentActiveItem = data.findIndex((item, index) => index === itemActiveIndex);
