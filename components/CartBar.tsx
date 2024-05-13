@@ -1,18 +1,12 @@
 "use client";
 
-import { ProductsApi } from "@/ProductApi";
 import { useGlobalTempState } from "@/zustant-store/globalTempStore";
 import { useCartStore } from "@/zustant-store/useCartStore";
 import Image from "next/image";
 import Link from "next/link";
 import React, { FC, useEffect } from "react";
 import ErrorBoundery from "./error/ErrorBoundery";
-
 const CartBar: FC = () => {
-
-
-
-
 
     const { isCartBarOpen, setIsCartBarOpen } = useGlobalTempState();
     const {
@@ -245,7 +239,7 @@ const CartBar: FC = () => {
                                     Proceed to Checkout
                                 </Link>
                                 <Link
-                                    href={`${ProductsApi.length > 0 ? "/cart" : "#"}`}
+                                    href={`/cart`}
                                     className="block w-full rounded-full mt-3 bg-blue-600 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
                                 >
                                     View Cart Page

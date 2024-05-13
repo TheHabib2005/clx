@@ -10,7 +10,7 @@ export default function Home() {
 
   const { isFetchingProduct, isFetchingError, products } = useFetchProduct()
   if (isFetchingProduct) {
-    return <div>Loading...</div>
+    return <div className="text-center p-5 ">Loading...</div>
   }
   if (isFetchingProduct) {
     return <div>Something Want Wrong...</div>

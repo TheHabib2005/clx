@@ -80,7 +80,6 @@ export const POST = async (req: Request) => {
     return NextResponse.json(response);
   } catch (error) {
     console.log(error);
-
     response = {
       success: false,
       data: [],

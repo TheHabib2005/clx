@@ -1,204 +1,159 @@
-// import { useOtherStore } from "@/zustand/useOtherStore";
+
+import { ProductsTYPE } from "@/constant-type";
+import useDebounce from "@/hooks/useDebounce";
+import { delay } from "@/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { it } from "node:test";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const SearchBar = () => {
-
-
     const searchParams = useSearchParams();
     const params = new URLSearchParams(searchParams);
-    const path = usePathname();
-    const router = useRouter();
     const [inputValue, setInputValue] = useState(params.get("q") || "");
+    const debounceValue = useDebounce(inputValue)
     const [searchBoxOpen, setSearchBoxOpen] = useState(false);
     const [recentBoxOpen, setRecentBoxOpen] = useState(false);
-    const [currentActiveSearchItemIndex, setcurrentActiveSearchItemIndex] = useState(-1)
-    const [data, setData] = useState([
-        {
-            id: 1,
-            name: "smartphone"
-        },
-        {
-            id: 2,
-            name: "laptops"
-        }, {
-            id: 3,
-            name: "watch"
-        }, {
-            id: 4,
-            name: "t-shirt"
-        }, {
-            id: 5,
-            name: "man-shirt"
-        }, {
-            id: 6,
-            name: "sunglasses"
-        }, {
-            id: 7,
-            name: "face-wash"
-        }, {
-            id: 8,
-            name: "electronic"
-        }, {
-            id: 9,
-            name: "gedgets"
-        },
-        {
-            id: 10,
-            name: "watch for man"
-        }, {
-            id: 11,
-            name: "watch for woman"
-
-        }, {
-            id: 12,
-            name: "watch for child"
-
-        }
-    ]);
-    const [filterData, setFilterData] = useState(data)
+    const [itemActiveIndex, setItemActiveIndex] = useState(-1);
 
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [data, setData] = useState<ProductsTYPE[]>([]);
+    const containerRef = useRef<any>(null);
+    const inputRef = useRef(null);
 
-
-    const handleInputClick = (e: any) => {
-        if (e.target.value) {
-            setSearchBoxOpen(true);
-            setRecentBoxOpen(false);
-        } else {
-            setRecentBoxOpen(true);
-            setSearchBoxOpen(false);
-        }
-    };
-
-    const handleInputChange = (event: any) => {
-        setInputValue(event.target.value);
+    let searchPagePath = `/search`
+    let router = useRouter();
+    const handleInputChange = async (event: any) => {
+        setInputValue(event.target.value)
         if (event.target.value.length > 0) {
-            setSearchBoxOpen(true);
-            setRecentBoxOpen(false);
+            setSearchBoxOpen(true)
+            setRecentBoxOpen(false)
         } else {
-            setSearchBoxOpen(false);
-            setRecentBoxOpen(true);
+            setRecentBoxOpen(true)
+            setSearchBoxOpen(false)
         }
-        setFilterData(data.filter(item => {
-            return item.name.toLowerCase().includes(event.target.value.toLowerCase())
-        }))
     };
 
 
-    const handleSearchItemClick = (item: any) => {
-        let me = `/products/search/`
-        setInputValue(item.name);
-        setSearchBoxOpen(false);
-        params.set("q", item.name);
-        router.push(`${me}?${params}`);
-        setcurrentActiveSearchItemIndex(item.index);
-        // addRecentSearch({
-        //     value: item.name,
-        //     createAt: new Date().getTime()
-        // })
-        // router.push("/products/search")
-    }
+    const handleInputClick = async () => {
 
-    const handleKeyDown = (event: any) => {
-
-        let index = currentActiveSearchItemIndex
-
-        if (event.key === "ArrowUp" || event.key === "ArrowDown" || event.key === "Enter") {
-
-            if (searchBoxOpen) {
-                handleSearchBoxKeyDown(event)
-            } else {
-                handleRecentSearchBoxKeyDown(event)
-            }
-
-
-
-
+        if (inputValue.length > 0) {
+            setSearchBoxOpen(true)
+            setRecentBoxOpen(false)
+        } else {
+            setRecentBoxOpen(true)
+            setSearchBoxOpen(false)
 
         }
-    }
+    };
 
-    const handleSearchBoxKeyDown = (event: any) => {
-        let searchRoute = `/products/search/`
-        let updateCuurentIndex = currentActiveSearchItemIndex
+    const handleInputKeyDown = (event: any) => {
+
         if (event.key === "ArrowDown") {
-            currentActiveSearchItemIndex < filterData.length - 1 ? setcurrentActiveSearchItemIndex(prev => prev + 1) : setcurrentActiveSearchItemIndex(0)
-            console.log(updateCuurentIndex);
 
-        }
+            setItemActiveIndex(prev => prev < data.length - 1 ? prev + 1 : prev)
+            if (containerRef.current && itemActiveIndex > -1) {
+                containerRef.current.scrollTop += 50
+            }
 
-        else if (event.key === "Enter") {
-
-
-
-
-            if (filterData.length > 0) {
-                handleSearchItemClick({
-                    name: filterData[updateCuurentIndex || 0].name,
-                    index: updateCuurentIndex || 0
-                })
-            } else {
-                params.set("q", inputValue)
-                router.replace(`products/search?${params}`)
-                router.push(`${searchRoute}?${params}`);
-
-                // addRecentSearch({
-                //     value: inputValue,
-                //     createAt: new Date().getTime()
-                // })
-
+        } else if (event.key === "ArrowUp") {
+            setItemActiveIndex(prev => prev > 0 ? prev - 1 : prev)
+            if (containerRef.current && itemActiveIndex > -1) {
+                containerRef.current.scrollTop -= 50
             }
         }
 
-        else {
-            updateCuurentIndex > 0 ? setcurrentActiveSearchItemIndex(prev => prev - 1) : setcurrentActiveSearchItemIndex(filterData.length - 1);
-
-
+        if (event.key === "Enter") {
+            if (itemActiveIndex > -1) {
+                let currentActiveItem = data.findIndex((item, index) => index === itemActiveIndex);
+                handleItemClick({ value: data[currentActiveItem].title })
+                setItemActiveIndex(-1)
+            } else {
+                handleItemClick({ value: inputValue })
+            }
         }
+    }
+
+
+    // fetch api 
+
+    const fetchData = async () => {
+        try {
+            setIsLoading(true);
+            let res = await fetch("/api/allProduct", {
+                method: "POST",
+                body: JSON.stringify(debounceValue),
+                cache: "no-cache"
+            });
+            let data = await res.json();
+            if (data.success) {
+                setData(data.data)
+            } if (data.error) {
+                setIsError(true)
+            } else {
+                setIsError(false)
+            }
+            setIsLoading(false)
+        } catch (error) {
+            setIsLoading(false)
+            setIsError(true)
+            console.log(error);
+        }
+    }
+
+
+
+    const handleItemClick = (item: { value: string }) => {
+        addParams("q", item.value)
+        setSearchBoxOpen(false)
+        setInputValue(item.value)
+    }
+
+
+    const addParams = (name: string, value: string) => {
+        params.set(name, value)
+        router.push(`${searchPagePath}?${params}`)
 
     }
 
-    const handleRecentSearchBoxKeyDown = (event: KeyboardEvent) => {
-        alert("r")
+    const deleteParams = (name: string) => {
+        params.delete(name)
+        router.push(`${searchPagePath}?${params}`)
     }
-
 
     useEffect(() => {
+        fetchData();
+    }, [debounceValue])
 
-        if (params.get("q")) {
-            setFilterData(data.filter(item => {
-                return item.name.toLowerCase().includes(inputValue.toLowerCase())
-            }))
-            setcurrentActiveSearchItemIndex(0)
-        } else {
-            setcurrentActiveSearchItemIndex(-1)
-
+    window.addEventListener("click", (event: any) => {
+        if (event.target.id !== "search-suggestion-content") {
+            setSearchBoxOpen(false)
+            setRecentBoxOpen(false)
         }
-
-
-    }, [])
-
+    })
 
 
 
     return (
         <form
-            className="w-1/3 relative md:block hidden"
+            className="w-1/3 relative md:block hidden "
             onSubmit={(e) => {
                 e.preventDefault();
-
             }}
         >
             <input
                 type="text"
                 placeholder="Search for products..."
                 className="text-white p-[8px] px-3 rounded-md bg-transparent border border-neutral-700 focus:border-neutral-500 outline-none min-w-full placeholder:text-neutral-400 placeholder:text-sm"
-                onClick={handleInputClick}
+
                 onChange={handleInputChange}
                 value={inputValue}
-                onKeyDown={handleKeyDown}
+                id="search-suggestion-content"
+                onClick={handleInputClick}
+                autoComplete="off"
+                onKeyDown={handleInputKeyDown}
+                ref={inputRef}
+
             />
             {inputValue.length > 0 ? (
                 <svg
@@ -206,13 +161,10 @@ const SearchBar = () => {
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     onClick={(e) => {
-
                         setInputValue("");
-                        setRecentBoxOpen(true);
                         setSearchBoxOpen(false);
-                        params.delete("q");
-                        router.replace(`${path}?${params}`)
-
+                        deleteParams("q")
+                        // inputRef.current && inputRef.current.blur()
                     }}
                     className="w-4 h-4 absolute right-3 top-[30%]  cursor-pointer text-white"
                 >
@@ -233,55 +185,47 @@ const SearchBar = () => {
                 </svg>
             )}
 
-            {searchBoxOpen && filterData.length > 0 && (
-                <div className={`absolute z-50 top-[100%] left-0 w-full p-3 mt-3 bg-[#252424] rounded-md flex flex-col gap-y-3 items-start justify-start`}>
+            {searchBoxOpen && (
+                <div
+                    id="search-suggestion-content"
+                    className={`absolute z-50 top-[100%] left-0 w-full p-3 mt-3 bg-[#252424] rounded-md flex flex-col gap-y-3 items-start justify-start h-[400px] overflow-y-auto search-popup`}
+                    ref={containerRef} style={{ height: '500px', overflowY: 'auto' }}
+                >
 
-                    {
-                        filterData.map((item, index) => (
+                    {isLoading ? "Loading" : data.map((item, index) => {
+                        return <div key={item.id}
+                            onClick={() => handleItemClick({
+                                value: item.title
+                            })}
+                            id="search-suggestion-content" className={`p-2 ${itemActiveIndex === index ? "bg-[#2563EB]" : "bg-[#1a1a1a]"} w-full  cursor-pointer rounded-md hover:bg-[#2563EB] transition-all duration-150 `}>
+                            {item.title}
+                        </div>
+                    })}
+
+                    {data.length === 0 && !isLoading && <div>no result found</div>}
+                </div>
+            )}
 
 
-                            <div
-                                onClick={() => {
-                                    handleSearchItemClick({ name: item.name, id: item.id, index })
-                                }}
-                                key={item.id} className={` ${currentActiveSearchItemIndex === index ? "bg-blue-600 hover:bg-blue-600" : "bg-[#2c2b2b] hover:bg-primary"} p-3  text-white rounded-md cursor-pointer w-full flex items-center justify-between   `}><span>{item.name}</span>
-                            </div>
-                        ))
-                    }
+            {recentBoxOpen && (
+                <div
+                    id="search-suggestion-content"
+                    className={`absolute z-50 top-[100%] left-0 w-full p-3 mt-3 bg-[#252424] rounded-md flex flex-col gap-y-3 items-start justify-start h-[400px] overflow-y-auto`}>
+                    {/* 
+                    {data.map((item) => {
+                        return <div key={item.id}
+                            onClick={() => handleItemClick({
+                                value: item.title
+                            })}
+                            id="search-suggestion-content" className="p-2 bg-[#1a1a1a] w-full  cursor-pointer rounded-md hover:bg-[#2563EB] transition-all duration-150">
+                            {item.title}
+                        </div>
+                    })} */}
+                    recent items
 
                 </div>
             )}
 
-            {/* {recentBoxOpen && recentSearch.length > 0 && (
-                <div className="absolute z-50 top-[100%] left-0 w-full p-3 mt-3 bg-[#252424] rounded-md flex flex-col gap-y-3 items-start justify-start">
-                    {
-                        recentSearch.map((item: any, index: number) => {
-                            return <div key={item.value}
-                                onClick={(e) => {
-
-                                    handleSearchItemClick({ name: item.value, index })
-                                    setRecentBoxOpen(false)
-                                }}
-                                className="p-3 bg-[#313030] text-white rounded-md cursor-pointer w-full flex items-center justify-between "><span>{item.value}</span>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    className="w-5 h-5"
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        removeSerchHistry(index)
-                                    }}
-                                >
-                                    <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                                </svg>
-                            </div>
-                        })
-                    }
-
-
-                </div>
-            )} */}
         </form>
     );
 };

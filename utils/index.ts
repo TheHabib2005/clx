@@ -33,3 +33,14 @@ export const fetchProductById = async (id: string) => {
     return error;
   }
 };
+export const calculateDiscountPrice = (
+  discountParcent: number,
+  originalPrice: number
+) => {
+  let discountPrice = (originalPrice * discountParcent) / 100;
+  let mainPrice = Math.round(originalPrice - discountPrice);
+  return `$${mainPrice}`;
+};
+
+export const delay = (time: number) =>
+  new Promise((resolve, reject) => setTimeout(resolve, time));
