@@ -13,7 +13,7 @@ const LayoutShiftIcon = () => {
     let gridColClassName = localStorage.getItem('gridColClassName')
     const { switchLayout, isGrid } = useLayoutSwitcherState()
     return (
-        <div className='sm:flex hidden items-center gap-x-3 mr-3 '>
+        <div className='sm:flex hidden items-center gap-x-3 mr-5 '>
             <BsGrid className={`${isGrid && "text-[#2563EB]"} text-white cursor-pointer text-xl`} onClick={() => {
                 switchLayout(true)
             }} />

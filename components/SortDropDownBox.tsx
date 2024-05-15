@@ -55,7 +55,7 @@ const SortDropDownBox = () => {
 
 
     return (
-        <div className="relative sm:mt-0 mt-3 w-[160px]"
+        <div className="relative sm:mt-0 mt-3 w-[160px] "
 
         >
             <div

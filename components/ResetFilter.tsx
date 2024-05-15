@@ -7,12 +7,12 @@ const ResetFilter = () => {
     const router = useRouter();
 
     return (
-        <button className='rounded-md border border-[#414040] px-4 py-1 text-lg' onClick={() => {
+        <button className='text-sm text-neutral-300 hover:text-neutral-200 ' onClick={() => {
             router.push(`${process.env.NEXT_PUBLIC_APP_URL}/${path}`)
             setTimeout(() => {
                 window.location.reload()
             }, 200)
-        }}>Reset</button>
+        }}>CLEAR ALL</button>
     )
 }
 

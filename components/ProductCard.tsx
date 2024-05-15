@@ -13,7 +13,7 @@ const ProductCard: FC<IProps> = ({ product }) => {
     const path = usePathname();
 
     return (
-        <div className="relative m-1 flex w-full max-w-xs flex-col overflow-hidden rounded-lg  bg-[#252525] shadow-md ">
+        <div className="relative m-1 flex w-full max-w-xs flex-col overflow-hidden rounded-lg  bg-[#252525] shadow-md mx-auto">
             <Link
                 className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
                 href={`${path}/${product.id}`}
@@ -36,7 +36,7 @@ const ProductCard: FC<IProps> = ({ product }) => {
                         <span className='ml-5'>{"..."}</span>
                     </h5>
                 </a>
-                <div className="mt-2 mb-5 flex items-center justify-between">
+                <div className="mt-2 mb-5">
                     <p>
                         <span className="text-3xl font-bold  text-white ">$449</span>
                         <span className="text-sm  text-white  line-through">$699</span>

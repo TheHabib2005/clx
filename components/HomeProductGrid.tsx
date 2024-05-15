@@ -6,7 +6,7 @@ import React from 'react'
 
 const HomeProduct = () => {
     return (
-        <section className=" grid  gap-4 px-4 pb-4 md:grid-cols-6 md:grid-rows-2 max-w-screen-2xl  mx-auto">
+        <section className=" grid  gap-4 px-4 pb-4 md:grid-cols-6 md:grid-rows-2   mx-auto">
             <div className="md:col-span-4 md:row-span-2">
                 <Link
                     className="relative block aspect-square h-full w-full"

@@ -62,7 +62,7 @@ const BrandLists = () => {
 
     return (
         <>
-            <div className="pt-5">
+            <div className="">
                 <div className=" border-t  border-neutral-700 px-4 py-3 select-none">
                     <div className="flex items-center justify-between cursor-pointer">
                         <h1>Choose Brand</h1>

@@ -50,10 +50,10 @@ const Pagination = ({ paginationItems = 5 }: { paginationItems: number }) => {
                 router.replace(`${path}?${params}`)
               }}
               key={index}
-              className={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg ${currentPage === index + 1 ? "bg-[#000AFF]" : "bg-[#1b1b1b]"} text-center align-middle font-sans text-xs font-medium uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
+              className={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg ${currentPage === index + 1 ? "bg-[#000AFF]" : "bg-[#313131]"} text-center align-middle font-sans text-xs font-medium uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
               type="button"
             >
-              <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 ">
+              <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2  text-[16px]">
                 {index + 1}
               </span>
             </button>

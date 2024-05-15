@@ -75,7 +75,7 @@ const QuickViewPopup = ({ isQuickViewPopupOpen, setIsQuickViewPopupOpen, product
                 <div className='flex gap-5 items-start z-[1]'>
                     <div className='w-[40%] group relative '>
                         <img src={product.thumbnail} alt="product-image" className='2xl:w-[400px] w-[300px] rounded-md' />
-                        <button className='w-full p-3 bg-[#2563EB] text-white cursor-default rounded-md   mt-3 mx-auto   z-[1] group-hover:inline-block'>View Details</button>
+                        <button className='w-full p-3 bg-[#2563EB] text-white cursor-pointer rounded-md   mt-3 mx-auto   z-[1] group-hover:inline-block'>View Details</button>
                     </div>
                     <div className='w-[70%] flex flex-col gap-y-3'>
                         <Link href={"#"} className='text-2xl capitalize hover:text-blue-600'>
